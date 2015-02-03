@@ -17,4 +17,7 @@ class CarbonServlet extends ScalatraServlet {
     html.helloTwirl.render(new java.util.Date)
   }
 
+  get("/new") {
+      html.createRepository.render
+  }
 }
