@@ -1,35 +1,28 @@
 @* レポジトリ作成画面 *@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Create a New Repository</title>
-  </head>
-  <body>
-    <form action="/repositories" method="post">
-      <dl>
-        <dt>Owner</dt>
-        <dd>
-          <input id="repository_owner"></input>
-        </dd>
-      </dl>
+@html.main("Create a New Repository"){
+  <form action="/repositories" method="post">
+    <dl>
+      <dt>Owner</dt>
+      <dd>
+        <input id="repository_owner"></input>
+      </dd>
+    </dl>
 
-      <dl>
-        <dt>Repository name</dt>
-        <dd>
-          <input id="repository_name"></input>
-        </dd>
-      </dl>
+    <dl>
+      <dt>Repository name</dt>
+      <dd>
+        <input id="repository_name"></input>
+      </dd>
+    </dl>
 
-      <dl>
-        <dt>Description</dt>
-        <dd>
-          <input id="repository_description"></input>
-        </dd>
-      </dl>
-      <button type="submit">
-        Create repository
-      </button>
-    </form>
-  </body>
-</html>
+    <dl>
+      <dt>Description</dt>
+      <dd>
+        <input id="repository_description"></input>
+      </dd>
+    </dl>
+    <button type="submit">
+      Create repository
+    </button>
+  </form>
+}
