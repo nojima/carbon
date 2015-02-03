@@ -1,0 +1,35 @@
+@* レポジトリ作成画面 *@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Create a New Repository</title>
+  </head>
+  <body>
+  	<form action="/repositories">
+      <dl>
+        <dd>Owner</dd>
+        <dt>
+          <input id="repository_owener"></input>
+        </dt>
+      </dl>
+
+      <dl>
+        <dd>Repository name</dd>
+        <dt>
+          <input id="repository_name"></input>
+        </dt>
+      </dl>
+
+      <dl>
+        <dd>Description</dd>
+        <dt>
+          <input id="repository_description"></input>
+        </dt>
+      </dl>
+      <button type="submit">
+        Create repository
+      </button>
+    </form>
+  </body>
+</html>
