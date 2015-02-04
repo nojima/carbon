@@ -18,6 +18,6 @@ class CarbonServlet extends ScalatraServlet {
   }
 
   get("/new") {
-      html.createRepository.render
+    html.createFolder.render
   }
 }

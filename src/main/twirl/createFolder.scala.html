@@ -1,0 +1,28 @@
+@* フォルダ作成画面 *@
+@html.main("Create a New Folder"){
+  <form action="/new" method="post">
+    <dl>
+      <dt>Owner</dt>
+      <dd>
+        <input name="folder_owner"></input>
+      </dd>
+    </dl>
+
+    <dl>
+      <dt>Folder name</dt>
+      <dd>
+        <input name="folder_name"></input>
+      </dd>
+    </dl>
+
+    <dl>
+      <dt>Description</dt>
+      <dd>
+        <input name="folder_description"></input>
+      </dd>
+    </dl>
+    <button type="submit">
+      Create folder
+    </button>
+  </form>
+}
