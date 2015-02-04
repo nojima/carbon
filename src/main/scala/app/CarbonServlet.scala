@@ -28,6 +28,15 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
     html.signup.render
   }
 
+  get("/users") {
+    // TODO: とりあえずベタ書き。後で直す。
+    val userQuery = TableQuery[Users]
+    val users = db.withTransaction { implicit session =>
+      userQuery.sortBy(_.id).run
+    }
+    html.users.render(users)
+  }
+
   post("/users") {
     // TODO: 仮実装。後で書き直す。
     (params.get("name"), params.get("password")) match {
@@ -36,7 +45,7 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
         db.withTransaction { implicit session =>
           userQuery.insert(User(0, name, password))
         }
-        redirect("/")
+        redirect("/users")
       case _ =>
         halt(400)
     }
