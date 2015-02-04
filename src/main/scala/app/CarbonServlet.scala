@@ -1,8 +1,13 @@
 package app
 
 import org.scalatra._
+import services.RepositoryService
 
 class CarbonServlet extends ScalatraServlet {
+  
+  case class RepositoryCreationForm(owner: String, name: String, description: String)
+  
+  val repositoryService = new RepositoryService
 
   get("/") {
     <html>
@@ -18,6 +23,11 @@ class CarbonServlet extends ScalatraServlet {
   }
 
   get("/new") {
-      html.createRepository.render
+    html.createRepository.render
+  }
+
+  get("/create") { form =>
+    repositoryService.ensureRepositoryExists(form.userName, form.ownder, form.repositoryName)
+    redirect("/${form.owner}/${form.name}")    
   }
 }
