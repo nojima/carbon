@@ -20,4 +20,11 @@ class CarbonServlet extends ScalatraServlet {
   get("/new") {
       html.createRepository.render
   }
+
+  get("/signup") {
+    html.signup.render
+  }
+
+  post("/users") {
+  }
 }
