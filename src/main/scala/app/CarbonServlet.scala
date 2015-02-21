@@ -45,7 +45,7 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
         db.withTransaction { implicit session =>
           userQuery.insert(User(0, name, password))
         }
-        redirect("/users")
+        redirect("/")
       case _ =>
         halt(400)
     }
