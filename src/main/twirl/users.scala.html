@@ -1,0 +1,10 @@
+@(users: Seq[model.User])
+@html.main("List of users"){
+<h1>List of users</h1>
+
+<ul>
+  @for(user <- users) {
+    <li><code>@user.name</code></li>
+  }
+</ul>
+}
