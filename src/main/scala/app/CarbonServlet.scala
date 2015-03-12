@@ -2,11 +2,15 @@ package app
 
 import org.scalatra._
 
+import dto.Folder
+
 import services.FolderService
 
 class CarbonServlet extends ScalatraServlet {
 
-  val folderService = new FolderService("~/.carbon");
+  val userHomeDirectory = scala.util.Properties.envOrElse("HOME", "~")
+
+  val folderService = new FolderService(s"${userHomeDirectory}/.carbon");
 
   get("/") {
     <html>
@@ -22,18 +26,18 @@ class CarbonServlet extends ScalatraServlet {
   }
 
   get("/new") {
-    html.createFolder.render
+    html.createFolder.render()
   }
 
   post("/new") {
-    val folderOwner       = params.get("folder_owner").getOrElse("");
-    val folderName        = params.get("folder_name").getOrElse("");
-    val folderDescription = params.get("folder_description").getOrElse("");
-    if (folderOwner == "" || folderOwner == "" || folderDescription == "") {
+    val folderOwner = params.get("folder_owner").getOrElse("");
+    val folderName = params.get("folder_name").getOrElse("");
+
+    if (folderOwner == "" || folderOwner == "") {
       redirect("/error");
     } else {
-      folderService.ensureFolderExists(
-        folderOwner, folderName, folderDescription);
+      folderService.ensureFolderExists(dto.Folder(folderOwner, folderName));
+
       redirect("/" + folderOwner + "/" + folderName);
     }
   }

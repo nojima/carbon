@@ -1,41 +1,28 @@
 package services
 
-object LockUtil {
+import java.io.File
 
-  /**
-    *  lock objects
-    */
-  private val locks = new ConcurrentHashMap[String, Lock]()
-
-  /**
-    *  Returns the lock object for the specified repository.
-    */
-  private def getLockObject(key: String): Lock = synchronized {
-    if(!locks.containsKey(key)){
-      locks.put(key, new ReentrantLock())
-    }
-    locks.get(key)
-  }
-
-  /**
-    *  Synchronizes a given function which modifies the working copy of the wiki repository.
-    */
-  def lock[T](key: String)(f: => T): T = defining(getLockObject(key)){ lock =>
-    try {
-      lock.lock()
-      f
-    } finally {
-      lock.unlock()
-    }
-  }
-
-}
-
+import dto.Folder
+import util.LockUtil
 
 class FolderService(baseDir: String) {
-  def ensureFolderExists(
-      folderOwner: String, folderName: String, folderDescription: String) = {
-    LockUtil.lock(s"${folderOwner}/${folderName}") {
 
+  def makeFolderPath(folder: dto.Folder): String =
+    s"${baseDir}/${folder.owner}/${folder.name}"
+
+  def ensureFolderExists(folder: dto.Folder): Unit = {
+    val folderPath = makeFolderPath(folder)
+    val folderDirectory = new File(folderPath)
+
+    LockUtil.lockWith(folderPath) {
+      if (folderDirectory.exists()) {
+        return
+      }
+
+      if (!folderDirectory.mkdirs()) {
+        throw new RuntimeException(
+          "Failed to create directory: " + folderPath)
+      }
+    }
   }
 }
