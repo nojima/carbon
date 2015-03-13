@@ -2,7 +2,6 @@ package services
 
 import java.io.File
 
-import dto.Folder
 import util.LockUtil
 
 class FolderService(baseDir: String) {

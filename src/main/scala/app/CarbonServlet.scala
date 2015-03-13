@@ -5,15 +5,13 @@ import model._
 import org.scalatra._
 import scala.slick.driver.H2Driver.simple._
 
-import dto.Folder
-
 import services.FolderService
 
 class CarbonServlet(db: Database) extends ScalatraServlet {
 
   val userHomeDirectory = scala.util.Properties.envOrElse("HOME", "~")
 
-  val folderService = new FolderService(s"${userHomeDirectory}/.carbon");
+  val folderService = new FolderService(s"${userHomeDirectory}/.carbon")
 
   get("/") {
     <html>
@@ -33,15 +31,15 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
   }
 
   post("/new") {
-    val folderOwner = params.get("folder_owner").getOrElse("");
-    val folderName = params.get("folder_name").getOrElse("");
+    val folderOwner = params.get("folder_owner").getOrElse("")
+    val folderName = params.get("folder_name").getOrElse("")
 
     if (folderOwner == "" || folderOwner == "") {
-      redirect("/error");
+      redirect("/error")
     } else {
-      folderService.ensureFolderExists(dto.Folder(folderOwner, folderName));
+      folderService.ensureFolderExists(dto.Folder(folderOwner, folderName))
 
-      redirect("/" + folderOwner + "/" + folderName);
+      redirect("/" + folderOwner + "/" + folderName)
     }
   }
 
