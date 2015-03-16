@@ -2,7 +2,7 @@ package services
 
 import java.io.File
 
-import util.LockUtil
+import util.FileLockUtil
 
 class FolderService(baseDir: String) {
 
@@ -13,7 +13,7 @@ class FolderService(baseDir: String) {
     val folderPath = makeFolderPath(folder)
     val folderDirectory = new File(folderPath)
 
-    LockUtil.lockWith(folderPath) {
+    FileLockUtil.lockWith(folderDirectory) {
       if (folderDirectory.exists()) {
         return
       }

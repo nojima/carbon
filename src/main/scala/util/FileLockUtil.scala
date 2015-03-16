@@ -1,9 +1,11 @@
 package util
 
+import java.io.File
+
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.locks.{ReentrantLock, Lock}
 
-object LockUtil {
+object FileLockUtil {
 
   /**
     *  lock objects
@@ -20,11 +22,8 @@ object LockUtil {
     locks.get(key)
   }
 
-  /**
-    *  Synchronizes a given function which modifies the working copy of the wiki repository.
-    */
-  def lockWith[T](key: String)(f: => T): T = {
-    val lock = getLockObject(key)
+  def lockWith[T](key: File)(f: => T): T = {
+    val lock = getLockObject(key.getAbsolutePath())
     try {
       lock.lock()
       f
