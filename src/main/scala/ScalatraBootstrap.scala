@@ -1,6 +1,5 @@
 import app._
 import model._
-
 import javax.servlet.ServletContext
 import org.scalatra._
 import scala.slick.driver.H2Driver.simple._
@@ -12,8 +11,8 @@ class ScalatraBootstrap extends LifeCycle {
     // テーブルが存在しない場合はテーブルを作る
     db.withTransaction { implicit session =>
       if (MTable.getTables.list.size == 0) {
-        val userQuery = TableQuery[Users]
-        userQuery.ddl.create
+        TableQuery[Users].ddl.create
+        TableQuery[Folders].ddl.create
       }
     }
   }

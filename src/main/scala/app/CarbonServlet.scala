@@ -1,17 +1,22 @@
 package app
 
 import model._
+import services.FolderService
+import logic.folder.{FolderComponent => FolderLogicComponent}
+import logic.folder.{FolderImpl => FolderLogicImpl}
 
+import java.io.File
 import org.scalatra._
 import scala.slick.driver.H2Driver.simple._
-
-import services.FolderService
 
 class CarbonServlet(db: Database) extends ScalatraServlet {
 
   val userHomeDirectory = scala.util.Properties.envOrElse("HOME", "~")
 
   val folderService = new FolderService(s"${userHomeDirectory}/.carbon")
+    with FolderLogicComponent {
+      val folderLogic = new FolderLogicImpl(db); 
+  }
 
   get("/") {
     <html>
@@ -37,7 +42,7 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
     if (folderOwner == "" || folderOwner == "") {
       redirect("/error")
     } else {
-      folderService.ensureFolderExists(dto.Folder(folderOwner, folderName))
+      folderService.addFolder(dto.Folder(folderOwner, folderName))
 
       redirect("/" + folderOwner + "/" + folderName)
     }
