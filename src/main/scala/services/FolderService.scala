@@ -11,13 +11,16 @@ class FolderService(baseDir: String) { this: FolderLogicComponent =>
   def makeFolderPath(folder: FolderDto): String =
     s"${baseDir}/${folder.owner}/${folder.name}"
 
-  def addFolder(folder: FolderDto): Unit = {
-    folderLogic.withInsertingFolder(folder) {
+  def addFolder(folder: FolderDto): Int = {
+    folderLogic.withInsertingFolder(folder) { folderId =>
       val folderPath = makeFolderPath(folder)
       val folderDirectory = new File(folderPath)  
       if (!folderDirectory.mkdirs()) {
         throw new RuntimeException("Failed to create directory: " + folderPath)
       }
+      folderId
     }
   }
+
+  def findFolder(folderId: Int): Option[FolderDto] = folderLogic.find(folderId)
 }

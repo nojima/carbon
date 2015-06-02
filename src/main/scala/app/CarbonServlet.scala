@@ -1,6 +1,7 @@
 package app
 
 import model._
+import dto.{Folder => FolderDto}
 import services.FolderService
 import logic.folder.{FolderComponent => FolderLogicComponent}
 import logic.folder.{FolderImpl => FolderLogicImpl}
@@ -35,6 +36,16 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
     html.createFolder.render()
   }
 
+  get("/folders/:folderId") {
+    val folderId = params("folderId").toInt
+    val folderDtoOpt = folderService.findFolder(folderId)
+    if (folderDtoOpt.isDefined) {
+      html.folder.render(folderDtoOpt.get)
+    } else {
+      halt(404)
+    }
+  }
+
   post("/new") {
     val folderOwner = params.get("folder_owner").getOrElse("")
     val folderName = params.get("folder_name").getOrElse("")
@@ -42,9 +53,9 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
     if (folderOwner == "" || folderOwner == "") {
       redirect("/error")
     } else {
-      folderService.addFolder(dto.Folder(folderOwner, folderName))
+      val folderId = folderService.addFolder(FolderDto(folderOwner, folderName))
 
-      redirect("/" + folderOwner + "/" + folderName)
+      redirect("/folders/" + folderId)
     }
   }
 
