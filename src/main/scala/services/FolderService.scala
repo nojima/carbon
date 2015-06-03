@@ -3,7 +3,6 @@ package services
 import java.io.File
 
 import dto.{Folder => FolderDto}
-import model.{Folders => FoldersTable}
 import logic.folder.{FolderComponent => FolderLogicComponent}
 import scala.slick.driver.H2Driver.simple._
 
@@ -12,14 +11,16 @@ class FolderService(baseDir: String) { this: FolderLogicComponent =>
     s"${baseDir}/${folder.owner}/${folder.name}"
 
   def addFolder(folder: FolderDto): Int = {
-    folderLogic.withInsertingFolder(folder) { folderId =>
-      val folderPath = makeFolderPath(folder)
-      val folderDirectory = new File(folderPath)  
-      if (!folderDirectory.mkdirs()) {
-        throw new RuntimeException("Failed to create directory: " + folderPath)
-      }
-      folderId
+    val folderId = folderLogic.insert(folder)
+
+    val folderPath = makeFolderPath(folder)
+    val folderDirectory = new File(folderPath)
+    if (!folderDirectory.mkdirs()) {
+      folderLogic.delete(folderId);
+      throw new RuntimeException("Failed to create directory: " + folderPath)
     }
+
+    folderId
   }
 
   def findFolder(folderId: Int): Option[FolderDto] = folderLogic.find(folderId)
