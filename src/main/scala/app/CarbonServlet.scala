@@ -32,15 +32,28 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
     html.helloTwirl.render(new java.util.Date)
   }
 
+  // フォルダの新規作成
   get("/new") {
     html.createFolder.render()
   }
 
+  // フォルダのトップ
   get("/folders/:folderId") {
     val folderId = params("folderId").toInt
     val folderDtoOpt = folderService.findFolder(folderId)
     if (folderDtoOpt.isDefined) {
       html.folder.render(folderDtoOpt.get)
+    } else {
+      halt(404)
+    }
+  }
+
+  // ドキュメントの新規作成
+  get("/folders/:folderId/new") {
+    val folderId = params("folderId").toInt
+    val folderDtoOpt = folderService.findFolder(folderId)
+    if (folderDtoOpt.isDefined) {
+      html.newDocument.render(folderDtoOpt.get)
     } else {
       halt(404)
     }
