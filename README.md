@@ -4,6 +4,8 @@
 
 ```sh
 $ cd Carbon
+$ npm install
+$ ./node_modules/dtsm/bin/dtsm install
 $ ./sbt
 > container:start
 > browse
