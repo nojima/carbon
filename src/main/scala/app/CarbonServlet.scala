@@ -40,22 +40,18 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
   // フォルダのトップ
   get("/folders/:folderId") {
     val folderId = params("folderId").toInt
-    val folderDtoOpt = folderService.findFolder(folderId)
-    if (folderDtoOpt.isDefined) {
-      html.folder.render(folderDtoOpt.get)
-    } else {
-      halt(404)
+    folderService.findFolder(folderId) match {
+      case Some(folderDto) => html.folder.render(folderDto)
+      case None => halt(404)
     }
   }
 
   // ドキュメントの新規作成
   get("/folders/:folderId/new") {
     val folderId = params("folderId").toInt
-    val folderDtoOpt = folderService.findFolder(folderId)
-    if (folderDtoOpt.isDefined) {
-      html.newDocument.render(folderDtoOpt.get)
-    } else {
-      halt(404)
+    folderService.findFolder(folderId) match {
+      case Some(folderDto) => html.newDocument.render(folderDto)
+      case None => halt(404)
     }
   }
 
@@ -66,7 +62,7 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
     if (folderOwner == "" || folderOwner == "") {
       redirect("/error")
     } else {
-      val folderId = folderService.addFolder(FolderDto(folderOwner, folderName))
+      val folderId = folderService.addFolder(FolderDto(0, folderOwner, folderName))
 
       redirect("/folders/" + folderId)
     }
