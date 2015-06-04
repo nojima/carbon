@@ -1,3 +1,3 @@
 package dto
 
-case class Folder(owner: String, name: String, id: Int = 0)
+case class Folder(id: Int, owner: String, name: String)

@@ -23,6 +23,6 @@ class FolderImpl(db: Database) extends Folder {
         TableQuery[FolderTable]
          .filter(_.id === folderId)
          .firstOption
-         .flatMap(x => Some(new FolderDto(x.owner, x.name, x.id)))
+         .flatMap(x => Some(new FolderDto(x.id, x.owner, x.name)))
      }
 }
