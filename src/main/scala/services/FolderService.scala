@@ -2,26 +2,26 @@ package services
 
 import java.io.File
 
-import util.FileLockUtil
+import dto.{Folder => FolderDto}
+import logic.folder.{FolderComponent => FolderLogicComponent}
+import scala.slick.driver.H2Driver.simple._
 
-class FolderService(baseDir: String) {
-
-  def makeFolderPath(folder: dto.Folder): String =
+class FolderService(baseDir: String) { this: FolderLogicComponent => 
+  def makeFolderPath(folder: FolderDto): String =
     s"${baseDir}/${folder.owner}/${folder.name}"
 
-  def ensureFolderExists(folder: dto.Folder): Unit = {
+  def addFolder(folder: FolderDto): Int = {
+    val folderId = folderLogic.insert(folder)
+
     val folderPath = makeFolderPath(folder)
     val folderDirectory = new File(folderPath)
-
-    FileLockUtil.lockWith(folderDirectory) {
-      if (folderDirectory.exists()) {
-        return
-      }
-
-      if (!folderDirectory.mkdirs()) {
-        throw new RuntimeException(
-          "Failed to create directory: " + folderPath)
-      }
+    if (!folderDirectory.mkdirs()) {
+      folderLogic.delete(folderId);
+      throw new RuntimeException("Failed to create directory: " + folderPath)
     }
+
+    folderId
   }
+
+  def findFolder(folderId: Int): Option[FolderDto] = folderLogic.find(folderId)
 }
