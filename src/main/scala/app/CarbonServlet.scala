@@ -14,9 +14,9 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
 
   val userHomeDirectory = scala.util.Properties.envOrElse("HOME", "~")
 
-  val folderService = new FolderService(s"${userHomeDirectory}/.carbon")
-    with FolderLogicComponent {
-      val folderLogic = new FolderLogicImpl(db); 
+  val folderService = new FolderService(s"${userHomeDirectory}/.carbon") with FolderLogicComponent
+  {
+    val folderLogic = new FolderLogicImpl(db);
   }
 
   get("/") {
