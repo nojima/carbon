@@ -67,3 +67,12 @@ jrebel.lic
 
 # paulp script
 /.lib/
+
+# nodejs
+node_modules
+typings
+
+# js
+bundle.js
+bundle.min.js
+compiled
