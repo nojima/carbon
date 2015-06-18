@@ -3,6 +3,7 @@
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-tslint');
 
@@ -35,7 +36,7 @@ module.exports = function(grunt) {
 
     browserify: {
       dist: {
-        src: jsBaseDir + '/compiled/**/*.js',
+        src: jsBaseDir + '/compiled/pages/NewDocument.js',
         dest: jsBaseDir + '/bundle.js'
       }
     },
@@ -50,6 +51,12 @@ module.exports = function(grunt) {
           src: [jsBaseDir + '/bundle.js'],
           dest: jsBaseDir + '/bundle.min.js'
         }]
+      }
+    },
+
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
       }
     }
   });
