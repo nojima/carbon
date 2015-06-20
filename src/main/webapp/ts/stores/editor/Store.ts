@@ -15,7 +15,7 @@ export class Store extends EventEmitter3 {
         super();
         this.dispatcher = dispatcher;
         this.dispatcher.registerHandler(
-            ActionType.CHANGE_VIEW, this.handleChangeView.bind(this));
+            ActionType.CHANGE_VIEW, this.handleChangeView, this);
     }
 
     getState(): { currentViewType: ViewType, html: string } {
@@ -33,9 +33,11 @@ export class Store extends EventEmitter3 {
         if (!(action instanceof ChangeViewAction)) {
             throw Error('instance of invalid type dispatched.');
         }
-        var a: ChangeViewAction = <ChangeViewAction> action;
+        let a: ChangeViewAction = <ChangeViewAction> action;
         this.currentViewType = a.nextViewType;
-        this.html = a.html;
+        if (a.html) {
+            this.html = a.html;
+        }
         this.emitChange();
     }
 }
