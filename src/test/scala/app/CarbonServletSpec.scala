@@ -3,14 +3,14 @@ package app
 import org.scalatra.test.specs2._
 
 // For more on Specs2, see http://etorreborre.github.com/specs2/guide/org.specs2.guide.QuickStart.html
-class CarbonServletSpec extends ScalatraSpec { def is =
-  "GET / on CarbonServlet"                     ^
-    "should return status 200"                  ! root200^
-                                                end
+// class CarbonServletSpec extends ScalatraSpec { def is =
+//   "GET / on CarbonServlet"                     ^
+//     "should return status 200"                  ! root200^
+//                                                 end
 
-  addServlet(classOf[CarbonServlet], "/*")
+//   addServlet(classOf[CarbonServlet], "/*")
 
-  def root200 = get("/") {
-    status must_== 200
-  }
-}
+//   def root200 = get("/") {
+//     status must_== 200
+//   }
+// }
