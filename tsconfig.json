@@ -8,15 +8,18 @@
   },
   "files": [
     "src/main/webapp/ts/actions/editor/ActionCreator.ts",
+    "src/main/webapp/ts/actions/editor/ActionCreatorSpec.ts",
     "src/main/webapp/ts/actions/editor/Actions.ts",
     "src/main/webapp/ts/components/Editor.ts",
     "src/main/webapp/ts/components/editor/Input.ts",
     "src/main/webapp/ts/components/editor/Preview.ts",
     "src/main/webapp/ts/components/editor/ViewType.ts",
     "src/main/webapp/ts/dispatchers/editor/Dispatcher.ts",
+    "src/main/webapp/ts/dispatchers/editor/DispatcherSpec.ts",
     "src/main/webapp/ts/pages/NewDocument.ts",
-    "src/main/webapp/ts/stores/StoreEventType.ts",
     "src/main/webapp/ts/stores/editor/Store.ts",
+    "src/main/webapp/ts/stores/editor/StoreSpec.ts",
+    "src/main/webapp/ts/stores/StoreEventType.ts",
     "typings/bundle.d.ts"
   ]
 }

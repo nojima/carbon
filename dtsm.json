@@ -19,6 +19,12 @@
     },
     "eventemitter3/eventemitter3.d.ts": {
       "ref": "31ce460184172fbb3c59c9fb03dcb74156014eed"
+    },
+    "mocha/mocha.d.ts": {
+      "ref": "43b6bf88758852b9ab713a9b011487f047f94f4e"
+    },
+    "power-assert/power-assert.d.ts": {
+      "ref": "43b6bf88758852b9ab713a9b011487f047f94f4e"
     }
   }
 }

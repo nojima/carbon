@@ -6,10 +6,10 @@ export class Dispatcher extends Flux.Dispatcher<Action> {
         super();
     }
 
-    registerHandler(type: ActionType, handler: Function): void {
+    registerHandler(type: ActionType, handler: Function, context?: Object): void {
         this.register(function(action: Action): void {
             if (action.type === type) {
-                handler.call(undefined, action);
+                handler.call(context, action);
             }
         });
     }
