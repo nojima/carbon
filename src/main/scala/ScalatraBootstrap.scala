@@ -25,5 +25,6 @@ class ScalatraBootstrap extends LifeCycle {
     initializeSchema(db)
 
     context.mount(new CarbonServlet(db), "/*")
+    context.mount(new InternalApiServlet(), "/api/*")
   }
 }

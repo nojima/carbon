@@ -12,7 +12,7 @@ export class Component extends React.Component<Props, {}> {
     render(): React.ReactElement<any> {
         return React.createElement('div', {
             'className': 'carbon-components-editor-preview',
-            'dangerouslySetInnerHTML': {'__html': this.props.html},
+            'dangerouslySetInnerHTML': {'__html': this.props.html}
         });
     }
 }

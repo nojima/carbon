@@ -37,17 +37,18 @@ function renderMarkdown(text: string): Promise<string> {
     'use strict';
 
     return new Promise<string>((resolve: Function, reject: Function): void => {
-            let xhr: XMLHttpRequest = new XMLHttpRequest();
-            xhr.onreadystatechange = (): void => {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        resolve(xhr.responseText);
-                    } else {
-                        reject('XHR Error');
-                    }
+        let xhr: XMLHttpRequest = new XMLHttpRequest();
+        xhr.onreadystatechange = (): void => {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    resolve(JSON.parse(xhr.responseText).html);
+                } else {
+                    reject('XHR Error');
                 }
-            };
-            xhr.open('POST', '/api/markdown/render.json');
-            xhr.send(text);
+            }
+        };
+        xhr.open('POST', '/api/markdown/render.json');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({'text': text}));
     });
 }

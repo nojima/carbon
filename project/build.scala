@@ -23,6 +23,8 @@ object CarbonBuild extends Build {
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-specs2" % ScalatraVersion % "test",
+        "org.scalatra" %% "scalatra-json" % ScalatraVersion,
+        "org.json4s"   %% "json4s-jackson" % "3.2.9",
         "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
         "org.mockito" % "mockito-core" % "1.10.19",
         "ch.qos.logback" % "logback-classic" % "1.1.2" % "runtime",
