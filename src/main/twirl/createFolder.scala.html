@@ -1,27 +1,23 @@
 @* フォルダ作成画面 *@
 @html.main("Create a New Folder"){
+  <h1>Create New Folder</h1>
   <form action="/new" method="post">
-    <dl>
-      <dt>Owner</dt>
-      <dd>
-        <input name="folder_owner"></input>
-      </dd>
-    </dl>
+    <div class="form-group">
+      <label for="folder_owner">Owner</label>
+      <input type="text" class="form-control" id="folder_owner" name="folder_owner">
+    </div>
 
-    <dl>
-      <dt>Folder name</dt>
-      <dd>
-        <input name="folder_name"></input>
-      </dd>
-    </dl>
+    <div class="form-group">
+      <label for="folder_name">Folder name</label>
+      <input type="text" class="form-control" id="folder_name" name="folder_name">
+    </div>
 
-    <dl>
-      <dt>Description</dt>
-      <dd>
-        <input name="folder_description"></input>
-      </dd>
-    </dl>
-    <button type="submit">
+    <div class="form-group">
+      <label for="folder_description">Description</label>
+      <input type="text" class="form-control" id="folder_description" name="folder_description">
+    </div>
+
+    <button class="btn btn-success" type="submit">
       Create folder
     </button>
   </form>
