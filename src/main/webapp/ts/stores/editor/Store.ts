@@ -36,6 +36,7 @@ export class Store extends EventEmitter3 {
         let a: ChangeViewAction = <ChangeViewAction> action;
         this.currentViewType = a.nextViewType;
         if (a.html) {
+            // todo: サニタイズ
             this.html = a.html;
         }
         this.emitChange();
