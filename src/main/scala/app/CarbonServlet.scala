@@ -3,6 +3,7 @@ package app
 import model._
 import dto.{Folder => FolderDto}
 import services.FolderService
+import services.RenderService
 import logic.folder.{FolderComponent => FolderLogicComponent}
 import logic.folder.{FolderImpl => FolderLogicImpl}
 
@@ -15,6 +16,8 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
   {
     val folderLogic = new FolderLogicImpl(db);
   }
+
+  val renderService = new RenderService()
 
   get("/") {
     <html>
@@ -50,6 +53,10 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
       case Some(folderDto) => html.newDocument.render(folderDto)
       case None => halt(404)
     }
+  }
+
+  post("/api/markdown/render.json") {
+    renderService.renderMarkdown(request.body)
   }
 
   post("/new") {
