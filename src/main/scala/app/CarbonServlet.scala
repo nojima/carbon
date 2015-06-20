@@ -11,10 +11,7 @@ import org.scalatra._
 import scala.slick.driver.H2Driver.simple._
 
 class CarbonServlet(db: Database) extends ScalatraServlet {
-
-  val userHomeDirectory = scala.util.Properties.envOrElse("HOME", "~")
-
-  val folderService = new FolderService(s"${userHomeDirectory}/.carbon") with FolderLogicComponent
+  val folderService = new FolderService with FolderLogicComponent
   {
     val folderLogic = new FolderLogicImpl(db);
   }
@@ -58,14 +55,8 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
   post("/new") {
     val folderOwner = params.get("folder_owner").getOrElse("")
     val folderName = params.get("folder_name").getOrElse("")
-
-    if (folderOwner == "" || folderOwner == "") {
-      redirect("/error")
-    } else {
-      val folderId = folderService.addFolder(FolderDto(0, folderOwner, folderName))
-
-      redirect("/folders/" + folderId)
-    }
+    val folderId = folderService.addFolder(FolderDto(0, folderOwner, folderName))
+    redirect("/folders/" + folderId)
   }
 
   get("/signup") {
