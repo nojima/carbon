@@ -5,6 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-scss-lint');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-tslint');
 
@@ -26,6 +27,17 @@ module.exports = function(grunt) {
       clean: {
         command: 'rm -rf src/main/webapp/js/bundle.js src/main/webapp/js/compiled'
       }
+    },
+
+    scsslint: {
+      options: {
+        bundleExec: true,
+        config: '.scss-lint.yml'
+      },
+
+      allFiles: [
+        scssBaseDir + '/**/*.scss'
+      ]
     },
 
     sass: {
