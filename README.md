@@ -7,7 +7,7 @@
 $ cd carbon
 $ npm install
 $ ./node_modules/dtsm/bin/dtsm install
-$ bundle install sass
+$ bundle install
 $ grunt fixts
 $ grunt sass
 $ grunt bundle
