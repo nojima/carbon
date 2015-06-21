@@ -1,7 +1,7 @@
-import { Promise } from 'es6-promise';
 import { Action, ActionType, ChangeViewAction } from './Actions';
 import { Dispatcher } from '../../dispatchers/editor/Dispatcher';
 import { ViewType } from '../../components/editor/ViewType';
+import { requestJson } from '../../net/Request';
 
 
 export class ActionCreator {
@@ -35,20 +35,6 @@ export class ActionCreator {
 
 function renderMarkdown(text: string): Promise<string> {
     'use strict';
-
-    return new Promise<string>((resolve: Function, reject: Function): void => {
-        let xhr: XMLHttpRequest = new XMLHttpRequest();
-        xhr.onreadystatechange = (): void => {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    resolve(JSON.parse(xhr.responseText).html);
-                } else {
-                    reject('XHR Error');
-                }
-            }
-        };
-        xhr.open('POST', '/api/markdown/render.json');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify({'text': text}));
-    });
+    return requestJson<string>(
+        '/api/markdown/render.json', 'POST', {'text': text});
 }
