@@ -61,7 +61,7 @@ export class Component extends React.Component<Props, State> {
                     'onChange': this.handleInputText.bind(this)
                 })
                 : React.createElement(Preview.Component, {
-                    'html': this.state.text
+                    'html': this.state.html
                 }));
 
         return React.createElement('div', {},

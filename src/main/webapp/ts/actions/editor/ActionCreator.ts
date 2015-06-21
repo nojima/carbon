@@ -1,7 +1,7 @@
-import { Promise } from 'es6-promise';
 import { Action, ActionType, ChangeViewAction } from './Actions';
 import { Dispatcher } from '../../dispatchers/editor/Dispatcher';
 import { ViewType } from '../../components/editor/ViewType';
+import { requestJson } from '../../net/Request';
 
 
 export class ActionCreator {
@@ -35,10 +35,6 @@ export class ActionCreator {
 
 function renderMarkdown(text: string): Promise<string> {
     'use strict';
-
-    return new Promise<string>(function(
-            resolve: Function, reject: Function): void {
-        // todo: あとでサーバに投げる
-        resolve(text);
-    });
+    return requestJson<string>(
+        '/api/markdown/render.json', 'POST', {'text': text});
 }
