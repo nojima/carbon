@@ -68,6 +68,15 @@ jrebel.lic
 # paulp script
 /.lib/
 
+# bundle
+.bundle
+vendor
+
+# scss/css
+.sass-cache
+*.map
+css/compiled
+
 # nodejs
 node_modules
 typings

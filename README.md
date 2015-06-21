@@ -3,11 +3,13 @@
 ## SetUp ##
 
 ```sh
-(Install node, npm and grunt-cli)
+(Install bundler, node, npm and grunt-cli)
 $ cd carbon
 $ npm install
 $ ./node_modules/dtsm/bin/dtsm install
+$ bundle install
 $ grunt fixts
+$ grunt sass
 $ grunt bundle
 ```
 
