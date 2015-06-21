@@ -2,6 +2,7 @@
 
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-shell');
@@ -9,6 +10,8 @@ module.exports = function(grunt) {
 
   var jsBaseDir = 'src/main/webapp/js';
   var tsBaseDir = 'src/main/webapp/ts';
+  var scssBaseDir = 'src/main/webapp/scss';
+  var cssBaseDir = 'src/main/webapp/css';
 
   grunt.initConfig({
     shell: {
@@ -22,6 +25,23 @@ module.exports = function(grunt) {
 
       clean: {
         command: 'rm -rf src/main/webapp/js/bundle.js src/main/webapp/js/compiled'
+      }
+    },
+
+    sass: {
+      options: {
+        lineNumbers: true,
+        bundleExec: true
+      },
+
+      dist: {
+        files: [{
+          expand: true,
+          cwd: scssBaseDir,
+          src: ['**/*.scss'],
+          dest: cssBaseDir + '/compiled/',
+          ext: '.css'
+        }]
       }
     },
 
