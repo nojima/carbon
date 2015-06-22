@@ -1,9 +1,45 @@
 @* フォルダのトップ *@
 @(folder: dto.Folder)
 @html.main("Folder"){
-<div>
-  <a class="btn btn-success" href="/folders/@folder.id/new">
-    ドキュメントを新規作成
-  </a>
+<div class="folder-layout">
+  <div class="folder-side-menu">
+
+    <div class="folder-new-document">
+      <a class="btn btn-success" href="/folders/@folder.id/new">
+        ドキュメントを新規作成
+      </a>
+    </div>
+
+    <div class="folder-document-filter">
+      <div class="form-group">
+        <label class="control-label">絞込み</label>
+        <div class="folder-document-filter-container">
+        </div>
+      </div>
+    </div>
+
+    <div class="search">
+      <div class="form-group">
+        <label class="control-label">検索</label>
+        <div class="folder-document-search-container">
+          <input class="form-control" type="text">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="folder-contents">
+    <div class="folder-document-list">
+      <ul>
+        <li>タイトル</li>
+        <li>タイトル</li>
+        <li>タイトル</li>
+        <li>タイトル</li>
+        <li>タイトル</li>
+        <li>タイトル</li>
+      </ul>
+    </div>
+  </div>
 </div>
 }
