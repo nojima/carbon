@@ -5,15 +5,17 @@ import org.scalatest.BeforeAndAfter
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 
-import dto.{Folder => FolderDto}
+import dto.FolderDto
+import logic.folder.FolderLogic
+import logic.folder.FolderLogicComponent
 
 class FolderServiceSpec extends FunSpec with BeforeAndAfter {
   var sut: FolderService = _
-  var folderLogicMock: logic.folder.Folder = _
+  var folderLogicMock: FolderLogic = _
 
   before {
-    folderLogicMock = mock(classOf[logic.folder.Folder])
-    sut = new FolderService with logic.folder.FolderComponent
+    folderLogicMock = mock(classOf[FolderLogic])
+    sut = new FolderService with FolderLogicComponent
     {
       val folderLogic = folderLogicMock
     }

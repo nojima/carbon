@@ -1,10 +1,10 @@
 package app
 
 import model._
-import dto.{Folder => FolderDto}
+import dto.FolderDto
 import services.FolderService
-import logic.folder.{FolderComponent => FolderLogicComponent}
-import logic.folder.{FolderImpl => FolderLogicImpl}
+import logic.folder.FolderLogicComponent
+import logic.folder.FolderLogicImpl
 
 import java.io.File
 import org.scalatra._

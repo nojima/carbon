@@ -1,10 +1,10 @@
 package logic.folder
 
-import dto.{Folder => FolderDto}
+import dto.FolderDto
 import model.{Folders => FolderTable, Folder => FolderModel}
 import scala.slick.driver.H2Driver.simple._
 
-class FolderImpl(db: Database) extends Folder {
+class FolderLogicImpl(db: Database) extends FolderLogic {
    override def insert(folder: FolderDto) = {
      val folderQuery = TableQuery[FolderTable]
      db.withTransaction { implicit session =>

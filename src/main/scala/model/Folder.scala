@@ -2,9 +2,6 @@ package model
 
 import scala.slick.driver.H2Driver.simple._
 
-/**
- * @author koji
- */
 case class Folder(
   id: Int,
   owner: String,
@@ -17,6 +14,6 @@ class Folders(tag: Tag) extends Table[Folder](tag, "folders") {
   def name = column[String]("name")
 
   def path = index("path_folder", (owner, name), unique = true)
-  
+
   def * = (id, owner, name) <> (Folder.tupled, Folder.unapply)
 }

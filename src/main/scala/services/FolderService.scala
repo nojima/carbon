@@ -1,7 +1,7 @@
 package services
 
-import dto.{Folder => FolderDto}
-import logic.folder.{FolderComponent => FolderLogicComponent}
+import dto.FolderDto
+import logic.folder.FolderLogicComponent
 
 class FolderService { this: FolderLogicComponent =>
   def addFolder(folder: FolderDto): Int = {
