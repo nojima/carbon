@@ -1,5 +1,7 @@
 import app._
 import model._
+import dto.FolderDto
+import logic.folder.FolderLogicImpl
 import javax.servlet.ServletContext
 import org.scalatra._
 import scala.slick.driver.H2Driver.simple._
@@ -15,6 +17,11 @@ class ScalatraBootstrap extends LifeCycle {
         TableQuery[Folders].ddl.create
       }
     }
+
+    // 初期データをつっこむ
+    val folderLogic = new FolderLogicImpl(db)
+    folderLogic.insert(new FolderDto(-1, "a", "a"))
+    folderLogic.insert(new FolderDto(-1, "a", "b"))
   }
 
   override def init(context: ServletContext) {
@@ -26,5 +33,6 @@ class ScalatraBootstrap extends LifeCycle {
 
     context.mount(new CarbonServlet(db), "/*")
     context.mount(new InternalApiServlet(), "/api/*")
+
   }
 }
