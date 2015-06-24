@@ -5,15 +5,14 @@ import dto.FolderDto
 import services.FolderService
 import dao.FolderDaoComponent
 import dao.FolderDaoImpl
+import util.DatabaseUtil
 
-import java.io.File
 import org.scalatra._
-import scala.slick.driver.H2Driver.simple._
+import slick.driver.H2Driver.api._
 
 class CarbonServlet(db: Database) extends ScalatraServlet {
-  val folderService = new FolderService with FolderDaoComponent
-  {
-    val folderDao = new FolderDaoImpl(db);
+  val folderService = new FolderService with FolderDaoComponent {
+    val folderDao = new FolderDaoImpl(db)
   }
 
   get("/") {
@@ -65,21 +64,19 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
 
   get("/users") {
     // TODO: とりあえずベタ書き。後で直す。
-    val userQuery = TableQuery[Users]
-    val users = db.withTransaction { implicit session =>
-      userQuery.sortBy(_.id).run
-    }
-    html.users.render(users)
+    val users = TableQuery[Users]
+    val action = users.sortBy(_.id).to[Seq].result
+    val result = DatabaseUtil.runAction(db, action)
+    html.users.render(result)
   }
 
   post("/users") {
     // TODO: 仮実装。後で書き直す。
     (params.get("name"), params.get("password")) match {
       case (Some(name), Some(password)) if name.length > 0 && password.length > 0 =>
-        val userQuery = TableQuery[Users]
-        db.withTransaction { implicit session =>
-          userQuery.insert(User(0, name, password))
-        }
+        val users = TableQuery[Users]
+        val action = users += User(0, name, password)
+        DatabaseUtil.runAction(db, action)
         redirect("/")
       case _ =>
         halt(400)
