@@ -1,15 +1,15 @@
 package services
 
-import dto.{Folder => FolderDto}
-import logic.folder.{FolderComponent => FolderLogicComponent}
+import dto.FolderDto
+import dao.FolderDaoComponent
 
-class FolderService { this: FolderLogicComponent =>
+class FolderService { this: FolderDaoComponent =>
   def addFolder(folder: FolderDto): Int = {
     if (folder.owner.isEmpty || folder.name.isEmpty) {
       throw new IllegalArgumentException("Could not create folder");
     }
-    folderLogic.insert(folder)
+    folderDao.insert(folder)
   }
 
-  def findFolder(folderId: Int): Option[FolderDto] = folderLogic.find(folderId)
+  def findFolder(folderId: Int): Option[FolderDto] = folderDao.find(folderId)
 }

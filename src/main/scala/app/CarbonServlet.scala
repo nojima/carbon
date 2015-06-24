@@ -1,19 +1,19 @@
 package app
 
 import model._
-import dto.{Folder => FolderDto}
+import dto.FolderDto
 import services.FolderService
-import logic.folder.{FolderComponent => FolderLogicComponent}
-import logic.folder.{FolderImpl => FolderLogicImpl}
+import dao.FolderDaoComponent
+import dao.FolderDaoImpl
 
 import java.io.File
 import org.scalatra._
 import scala.slick.driver.H2Driver.simple._
 
 class CarbonServlet(db: Database) extends ScalatraServlet {
-  val folderService = new FolderService with FolderLogicComponent
+  val folderService = new FolderService with FolderDaoComponent
   {
-    val folderLogic = new FolderLogicImpl(db);
+    val folderDao = new FolderDaoImpl(db);
   }
 
   get("/") {
