@@ -6,18 +6,18 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 
 import dto.FolderDto
-import logic.folder.FolderLogic
-import logic.folder.FolderLogicComponent
+import dao.FolderDao
+import dao.FolderDaoComponent
 
 class FolderServiceSpec extends FunSpec with BeforeAndAfter {
   var sut: FolderService = _
-  var folderLogicMock: FolderLogic = _
+  var folderDaoMock: FolderDao = _
 
   before {
-    folderLogicMock = mock(classOf[FolderLogic])
-    sut = new FolderService with FolderLogicComponent
+    folderDaoMock = mock(classOf[FolderDao])
+    sut = new FolderService with FolderDaoComponent
     {
-      val folderLogic = folderLogicMock
+      val folderDao = folderDaoMock
     }
   }
 
@@ -30,7 +30,7 @@ class FolderServiceSpec extends FunSpec with BeforeAndAfter {
       sut.addFolder(dto)
 
       // Verify
-      verify(folderLogicMock).insert(dto)
+      verify(folderDaoMock).insert(dto)
     }
 
     it("ownerが空の場合に例外を投げる") {
@@ -52,7 +52,7 @@ class FolderServiceSpec extends FunSpec with BeforeAndAfter {
       sut.findFolder(1)
 
       // Verify
-      verify(folderLogicMock).find(1)
+      verify(folderDaoMock).find(1)
     }
   }
 }

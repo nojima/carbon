@@ -1,10 +1,10 @@
-package logic.folder
+package dao
 
 import dto.FolderDto
 import model.{Folders => FolderTable, Folder => FolderModel}
 import scala.slick.driver.H2Driver.simple._
 
-class FolderLogicImpl(db: Database) extends FolderLogic {
+class FolderDaoImpl(db: Database) extends FolderDao {
   private val folderQuery = TableQuery[FolderTable]
 
   override def insert(folder: FolderDto): Int =

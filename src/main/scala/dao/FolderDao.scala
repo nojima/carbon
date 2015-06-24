@@ -1,8 +1,8 @@
-package logic.folder
+package dao
 
 import dto.FolderDto
 
-trait FolderLogic {
+trait FolderDao {
   def insert(folder: FolderDto): Int
 
   def delete(folderId: Int)
@@ -10,6 +10,6 @@ trait FolderLogic {
   def find(folderId: Int): Option[FolderDto]
 }
 
-trait FolderLogicComponent {
-  val folderLogic: FolderLogic
+trait FolderDaoComponent {
+  val folderDao: FolderDao
 }
