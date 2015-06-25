@@ -1,6 +1,6 @@
 package model
 
-import scala.slick.driver.H2Driver.simple._
+import slick.driver.H2Driver.api._
 
 case class User(
   id: Int,

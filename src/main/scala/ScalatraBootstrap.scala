@@ -2,20 +2,21 @@ import app._
 import model._
 import dto.FolderDto
 import dao.FolderDaoImpl
+import util.DatabaseUtil
+
 import javax.servlet.ServletContext
 import org.scalatra._
-import scala.slick.driver.H2Driver.simple._
-import scala.slick.jdbc.JdbcBackend.Database
-import scala.slick.jdbc.meta._
+import slick.driver.H2Driver.api._
+import slick.jdbc.meta.MTable
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class ScalatraBootstrap extends LifeCycle {
   private def initializeSchema(db: Database) {
     // テーブルが存在しない場合はテーブルを作る
-    db.withTransaction { implicit session =>
-      if (MTable.getTables.list.size == 0) {
-        TableQuery[Users].ddl.create
-        TableQuery[Folders].ddl.create
-      }
+    val tableExists = MTable.getTables.map(_.size == 0)
+    if (DatabaseUtil.runAction(db, tableExists)) {
+      val createSchema = (TableQuery[Users].schema ++ TableQuery[Folders].schema).create
+      DatabaseUtil.runAction(db, createSchema)
     }
 
     // 初期データをつっこむ
