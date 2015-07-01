@@ -1,19 +1,17 @@
 package app
 
-import model._
-import dto.FolderDto
-import services.FolderService
-import dao.FolderDaoComponent
-import dao.FolderDaoImpl
+import dto.{UserDto, FolderDto}
+import services.{UserService, FolderService}
+import dao.{UserDaoImpl, UserDaoComponent, FolderDaoComponent, FolderDaoImpl}
 
-import java.io.File
 import org.scalatra._
-import scala.slick.driver.H2Driver.simple._
 
-class CarbonServlet(db: Database) extends ScalatraServlet {
-  val folderService = new FolderService with FolderDaoComponent
-  {
-    val folderDao = new FolderDaoImpl(db);
+class CarbonServlet() extends ScalatraServlet {
+  val folderService = new FolderService with FolderDaoComponent {
+    val folderDao = new FolderDaoImpl()
+  }
+  val userService = new UserService with UserDaoComponent {
+    val userDao = new UserDaoImpl()
   }
 
   get("/") {
@@ -64,25 +62,13 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
   }
 
   get("/users") {
-    // TODO: とりあえずベタ書き。後で直す。
-    val userQuery = TableQuery[Users]
-    val users = db.withTransaction { implicit session =>
-      userQuery.sortBy(_.id).run
-    }
-    html.users.render(users)
+    html.users.render(userService.listUsers())
   }
 
   post("/users") {
-    // TODO: 仮実装。後で書き直す。
-    (params.get("name"), params.get("password")) match {
-      case (Some(name), Some(password)) if name.length > 0 && password.length > 0 =>
-        val userQuery = TableQuery[Users]
-        db.withTransaction { implicit session =>
-          userQuery.insert(User(0, name, password))
-        }
-        redirect("/")
-      case _ =>
-        halt(400)
-    }
+    val name = params.get("name").getOrElse("")
+    val password = params.get("password").getOrElse("")
+    userService.addUser(UserDto(0, name, password))
+    redirect("/")
   }
 }

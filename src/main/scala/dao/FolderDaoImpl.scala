@@ -1,25 +1,17 @@
 package dao
 
 import dto.FolderDto
-import model.{Folders => FolderTable, Folder => FolderModel}
-import scala.slick.driver.H2Driver.simple._
+import scalikejdbc._
 
-class FolderDaoImpl(db: Database) extends FolderDao {
-  private val folderQuery = TableQuery[FolderTable]
+class FolderDaoImpl extends FolderDao {
+  override def insert(folder: FolderDto)(implicit session: DBSession): Int =
+    sql"""INSERT INTO "folders" ("owner", "name") VALUES (${folder.owner}, ${folder.name})""".update().apply()
 
-  override def insert(folder: FolderDto): Int =
-    db.withTransaction { implicit session =>
-      (folderQuery returning folderQuery.map(_.id)) += FolderModel(-1, folder.owner, folder.name)
-    }
+  override def delete(folderId: Int)(implicit session: DBSession): Int =
+    sql"""DELETE FROM "folders" WHERE "id" = $folderId""".update().apply()
 
-  override def delete(folderId: Int) =
-    db.withTransaction { implicit session =>
-      folderQuery.filter(_.id === folderId).delete
-    }
-
-  override def find(folderId: Int): Option[FolderDto] =
-    db.withTransaction { implicit session =>
-      folderQuery.filter(_.id === folderId).firstOption
-        .flatMap(x => Some(new FolderDto(x.id, x.owner, x.name)))
-    }
+  override def find(folderId: Int)(implicit session: DBSession): Option[FolderDto] =
+    sql"""SELECT "id", "owner", "name" FROM "folders" WHERE "id" = $folderId"""
+      .map(r => FolderDto(r.int("id"), r.string("owner"), r.string("name")))
+      .single().apply()
 }

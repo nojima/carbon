@@ -8,15 +8,16 @@ import org.mockito.Matchers._
 import dto.FolderDto
 import dao.FolderDao
 import dao.FolderDaoComponent
+import scalikejdbc._
 
 class FolderServiceSpec extends FunSpec with BeforeAndAfter {
   var sut: FolderService = _
   var folderDaoMock: FolderDao = _
 
   before {
+    ConnectionPool.singleton("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;TRACE_LEVEL_FILE=4;MODE=PostgreSQL", "", "")
     folderDaoMock = mock(classOf[FolderDao])
-    sut = new FolderService with FolderDaoComponent
-    {
+    sut = new FolderService with FolderDaoComponent {
       val folderDao = folderDaoMock
     }
   }
@@ -30,7 +31,7 @@ class FolderServiceSpec extends FunSpec with BeforeAndAfter {
       sut.addFolder(dto)
 
       // Verify
-      verify(folderDaoMock).insert(dto)
+      verify(folderDaoMock).insert(org.mockito.Matchers.eq(dto))(any[DBSession])
     }
 
     it("ownerが空の場合に例外を投げる") {
@@ -52,7 +53,7 @@ class FolderServiceSpec extends FunSpec with BeforeAndAfter {
       sut.findFolder(1)
 
       // Verify
-      verify(folderDaoMock).find(1)
+      verify(folderDaoMock).find(org.mockito.Matchers.eq(1))(any[DBSession])
     }
   }
 }
