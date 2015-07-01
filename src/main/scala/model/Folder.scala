@@ -1,6 +1,6 @@
 package model
 
-import slick.driver.H2Driver.api._
+import scala.slick.driver.H2Driver.simple._
 
 case class Folder(
   id: Int,
