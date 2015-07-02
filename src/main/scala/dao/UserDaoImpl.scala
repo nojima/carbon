@@ -16,7 +16,7 @@ class UserDaoImpl extends UserDao {
 
   def list(maxCount: Int, minId: Int)(implicit session: DBSession): List[UserDto] =
     sql"""SELECT "id", "name", "password" FROM "users" WHERE "id" >= $minId ORDER BY "id" LIMIT $maxCount"""
-      .map(toUserDto).list.apply()
+      .map(toUserDto).list().apply()
 
   private def toUserDto(r: WrappedResultSet) =
     UserDto(r.int("id"), r.string("name"), r.string("password"))

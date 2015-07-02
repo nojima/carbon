@@ -2,6 +2,7 @@ import app._
 import dto.FolderDto
 import dao.FolderDaoImpl
 import javax.servlet.ServletContext
+import lib.DatabaseImpl
 import org.scalatra._
 import scalikejdbc._
 
@@ -37,7 +38,8 @@ class ScalatraBootstrap extends LifeCycle {
     // とりあえず起動時にスキーマを初期化する
     initializeSchema()
 
-    context.mount(new CarbonServlet(), "/*")
+    val db = new DatabaseImpl
+    context.mount(new CarbonServlet(db), "/*")
     context.mount(new InternalApiServlet(), "/api/*")
   }
 }

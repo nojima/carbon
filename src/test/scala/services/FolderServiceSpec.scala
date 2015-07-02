@@ -1,5 +1,6 @@
 package services
 
+import lib.FakeDatabaseImpl
 import org.scalatest.FunSpec
 import org.scalatest.BeforeAndAfter
 import org.mockito.Mockito._
@@ -15,9 +16,8 @@ class FolderServiceSpec extends FunSpec with BeforeAndAfter {
   var folderDaoMock: FolderDao = _
 
   before {
-    ConnectionPool.singleton("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;TRACE_LEVEL_FILE=4;MODE=PostgreSQL", "", "")
     folderDaoMock = mock(classOf[FolderDao])
-    sut = new FolderService with FolderDaoComponent {
+    sut = new FolderService(new FakeDatabaseImpl) with FolderDaoComponent {
       val folderDao = folderDaoMock
     }
   }

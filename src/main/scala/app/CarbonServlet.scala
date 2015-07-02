@@ -1,16 +1,17 @@
 package app
 
 import dto.{UserDto, FolderDto}
+import lib.Database
 import services.{UserService, FolderService}
 import dao.{UserDaoImpl, UserDaoComponent, FolderDaoComponent, FolderDaoImpl}
 
 import org.scalatra._
 
-class CarbonServlet() extends ScalatraServlet {
-  val folderService = new FolderService with FolderDaoComponent {
+class CarbonServlet(db: Database) extends ScalatraServlet {
+  val folderService = new FolderService(db) with FolderDaoComponent {
     val folderDao = new FolderDaoImpl()
   }
-  val userService = new UserService with UserDaoComponent {
+  val userService = new UserService(db) with UserDaoComponent {
     val userDao = new UserDaoImpl()
   }
 

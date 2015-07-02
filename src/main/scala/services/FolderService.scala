@@ -2,20 +2,20 @@ package services
 
 import dto.FolderDto
 import dao.FolderDaoComponent
-import scalikejdbc._
+import lib.Database
 
-class FolderService { this: FolderDaoComponent =>
+class FolderService(db: Database) { this: FolderDaoComponent =>
   def addFolder(folder: FolderDto): Int = {
     if (folder.owner.isEmpty || folder.name.isEmpty) {
       throw new IllegalArgumentException("Could not create folder")
     }
-    DB localTx { implicit session =>
+    db.transaction { implicit session =>
       folderDao.insert(folder)
     }
   }
 
   def findFolder(folderId: Int): Option[FolderDto] =
-    DB.readOnly { implicit session =>
+    db.transaction { implicit session =>
       folderDao.find(folderId)
     }
 }
