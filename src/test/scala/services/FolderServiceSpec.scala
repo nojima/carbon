@@ -4,12 +4,12 @@ import lib.FakeDatabaseImpl
 import org.scalatest.FunSpec
 import org.scalatest.BeforeAndAfter
 import org.mockito.Mockito._
-import org.mockito.Matchers._
+import org.mockito.Matchers.{any, eq => equal}
 
 import dto.FolderDto
 import dao.FolderDao
 import dao.FolderDaoComponent
-import scalikejdbc._
+import scalikejdbc.DBSession
 
 class FolderServiceSpec extends FunSpec with BeforeAndAfter {
   var sut: FolderService = _
@@ -25,24 +25,24 @@ class FolderServiceSpec extends FunSpec with BeforeAndAfter {
   describe("addFolderは") {
     it("insertできる") {
       // SetUp
-      val dto = new FolderDto(0, "owner", "name")
+      val dto = FolderDto(0, "owner", "name")
 
       // Exercise
       sut.addFolder(dto)
 
       // Verify
-      verify(folderDaoMock).insert(org.mockito.Matchers.eq(dto))(any[DBSession])
+      verify(folderDaoMock).insert(equal(dto))(any[DBSession])
     }
 
     it("ownerが空の場合に例外を投げる") {
       intercept[IllegalArgumentException] {
-        sut.addFolder(new FolderDto(0, "", "name"))
+        sut.addFolder(FolderDto(0, "", "name"))
       }
     }
 
     it("nameが空の場合に例外を投げる") {
       intercept[IllegalArgumentException] {
-        sut.addFolder(new FolderDto(0, "owner", ""))
+        sut.addFolder(FolderDto(0, "owner", ""))
       }
     }
   }
@@ -53,7 +53,7 @@ class FolderServiceSpec extends FunSpec with BeforeAndAfter {
       sut.findFolder(1)
 
       // Verify
-      verify(folderDaoMock).find(org.mockito.Matchers.eq(1))(any[DBSession])
+      verify(folderDaoMock).find(equal(1))(any[DBSession])
     }
   }
 }
