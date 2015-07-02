@@ -23,7 +23,6 @@ class UserServiceSpec extends FunSpec with BeforeAndAfter {
 
   describe("addUserは") {
     it("insertできる") {
-      //
       // Setup
       val dto = UserDto(0, "name", "password")
 

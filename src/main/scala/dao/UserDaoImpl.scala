@@ -5,7 +5,7 @@ import scalikejdbc._
 
 class UserDaoImpl extends UserDao {
   def insert(user: UserDto)(implicit session: DBSession): Int =
-    sql"""INSERT INTO "users" ("id", "name", "password") VALUES (${user.id}, ${user.name}, ${user.password})""".update().apply()
+    sql"""INSERT INTO "users" ("name", "password") VALUES (${user.name}, ${user.password})""".update().apply()
 
   def delete(userId: Int)(implicit session: DBSession): Int =
     sql"""DELETE FROM "users" WHERE "id" = $userId""".update().apply()
