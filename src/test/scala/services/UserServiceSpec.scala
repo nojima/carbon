@@ -26,22 +26,27 @@ class UserServiceSpec extends FunSpec with BeforeAndAfter {
       val dto = UserDto(0, "name", "password")
 
       // Exercise
-      sut.addUser(dto)
+      val t = sut.addUser(dto)
 
       // Verify
+      assert(t.isSuccess)
       verify(userDaoMock).insert(equal(dto))(any[DBSession])
     }
 
-    it("nameが空の場合に例外を投げる") {
-      intercept[IllegalArgumentException] {
-        sut.addUser(UserDto(0, "", "password"))
-      }
+    it("nameが空の場合に失敗する") {
+      // Exercise
+      val t = sut.addUser(UserDto(0, "", "password"))
+
+      // Verify
+      assert(t.isFailure)
     }
 
-    it("passwordが空の場合に例外を投げる") {
-      intercept[IllegalArgumentException] {
-        sut.addUser(UserDto(0, "name", ""))
-      }
+    it("passwordが空の場合に失敗する") {
+      // Exercise
+      val t = sut.addUser(UserDto(0, "name", ""))
+
+      // Verify
+      assert(t.isFailure)
     }
 
     describe("listUserは") {

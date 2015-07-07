@@ -28,29 +28,34 @@ class FolderServiceSpec extends FunSpec with BeforeAndAfter {
       val dto = FolderDto(0, "owner", "name")
 
       // Exercise
-      sut.addFolder(dto)
+      val t = sut.addFolder(dto)
 
       // Verify
+      assert(t.isSuccess)
       verify(folderDaoMock).insert(equal(dto))(any[DBSession])
     }
 
-    it("ownerが空の場合に例外を投げる") {
-      intercept[IllegalArgumentException] {
-        sut.addFolder(FolderDto(0, "", "name"))
-      }
+    it("ownerが空の場合に失敗する") {
+      // Exercise
+      val t = sut.addFolder(FolderDto(0, "", "name"))
+
+      // Verify
+      assert(t.isFailure)
     }
 
-    it("nameが空の場合に例外を投げる") {
-      intercept[IllegalArgumentException] {
-        sut.addFolder(FolderDto(0, "owner", ""))
-      }
+    it("nameが空の場合に失敗する") {
+      // Exercise
+      val t = sut.addFolder(FolderDto(0, "owner", ""))
+
+      // Verify
+      assert(t.isFailure)
     }
   }
 
   describe("findFolderで") {
     it("folderを取ってこれる") {
       // Exercise
-      sut.findFolder(1)
+      val t = sut.findFolder(1)
 
       // Verify
       verify(folderDaoMock).find(equal(1))(any[DBSession])

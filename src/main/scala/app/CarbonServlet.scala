@@ -54,8 +54,9 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
   post("/new") {
     val folderOwner = params.get("folder_owner").getOrElse("")
     val folderName = params.get("folder_name").getOrElse("")
-    val folderId = folderService.addFolder(FolderDto(0, folderOwner, folderName))
-    redirect("/folders/" + folderId)
+    folderService.addFolder(FolderDto(0, folderOwner, folderName)).map { folderId =>
+      redirect("/folders/" + folderId)
+    }.get
   }
 
   get("/signup") {
@@ -69,7 +70,8 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
   post("/users") {
     val name = params.get("name").getOrElse("")
     val password = params.get("password").getOrElse("")
-    userService.addUser(UserDto(0, name, password))
-    redirect("/")
+    userService.addUser(UserDto(0, name, password)).map {
+      userId => redirect("/") // TODO: redirect to the user page.
+    }.get
   }
 }
