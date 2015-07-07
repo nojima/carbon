@@ -15,8 +15,7 @@ class UserServiceSpec extends FunSpec with BeforeAndAfter {
 
   before {
     userDaoMock = mock(classOf[UserDao])
-    sut =
-      new UserService(new FakeDatabaseImpl) with UserDaoComponent {
+    sut = new UserService(new FakeDatabaseImpl) with UserDaoComponent {
       val userDao = userDaoMock
     }
   }

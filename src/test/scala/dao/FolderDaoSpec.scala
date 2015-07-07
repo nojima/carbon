@@ -5,7 +5,7 @@ import lib.SessionSupport
 import org.scalatest.FunSpec
 
 class FolderDaoSpec extends FunSpec with SessionSupport {
-  val sut: FolderDao= new FolderDaoImpl
+  val sut: FolderDao = new FolderDaoImpl
 
   describe("FolderDaoは") {
     it("insertしてfindできる") {
