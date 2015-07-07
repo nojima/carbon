@@ -4,6 +4,8 @@ import scalikejdbc.{ConnectionPool, NoSession, NamedDB, DBSession}
 
 trait Database {
   def transaction[R](f: DBSession => R): R
+
+  def close(): Unit
 }
 
 class DatabaseImpl(name: Symbol, traceLevel: Int) extends Database {
@@ -11,9 +13,14 @@ class DatabaseImpl(name: Symbol, traceLevel: Int) extends Database {
 
   def transaction[R](f: DBSession => R): R =
     NamedDB(name).localTx(f)
+
+  def close(): Unit =
+    NamedDB(name).close()
 }
 
 class FakeDatabaseImpl extends Database {
   def transaction[R](f: DBSession => R): R =
     f(NoSession)
+
+  def close(): Unit = ()
 }
