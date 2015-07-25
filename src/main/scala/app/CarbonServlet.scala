@@ -1,18 +1,18 @@
 package app
 
-import model._
-import dto.FolderDto
-import services.FolderService
-import dao.FolderDaoComponent
-import dao.FolderDaoImpl
-import util.DatabaseUtil
+import dto.{UserDto, FolderDto}
+import lib.Database
+import services.{UserService, FolderService}
+import dao.{UserDaoImpl, UserDaoComponent, FolderDaoComponent, FolderDaoImpl}
 
 import org.scalatra._
-import slick.driver.H2Driver.api._
 
 class CarbonServlet(db: Database) extends ScalatraServlet {
-  val folderService = new FolderService with FolderDaoComponent {
-    val folderDao = new FolderDaoImpl(db)
+  val folderService = new FolderService(db) with FolderDaoComponent {
+    val folderDao = new FolderDaoImpl()
+  }
+  val userService = new UserService(db) with UserDaoComponent {
+    val userDao = new UserDaoImpl()
   }
 
   get("/") {
@@ -54,8 +54,9 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
   post("/new") {
     val folderOwner = params.get("folder_owner").getOrElse("")
     val folderName = params.get("folder_name").getOrElse("")
-    val folderId = folderService.addFolder(FolderDto(0, folderOwner, folderName))
-    redirect("/folders/" + folderId)
+    folderService.addFolder(FolderDto(0, folderOwner, folderName)).map { folderId =>
+      redirect("/folders/" + folderId)
+    }.get
   }
 
   get("/signup") {
@@ -63,23 +64,14 @@ class CarbonServlet(db: Database) extends ScalatraServlet {
   }
 
   get("/users") {
-    // TODO: とりあえずベタ書き。後で直す。
-    val users = TableQuery[Users]
-    val action = users.sortBy(_.id).to[Seq].result
-    val result = DatabaseUtil.runAction(db, action)
-    html.users.render(result)
+    html.users.render(userService.listUsers())
   }
 
   post("/users") {
-    // TODO: 仮実装。後で書き直す。
-    (params.get("name"), params.get("password")) match {
-      case (Some(name), Some(password)) if name.length > 0 && password.length > 0 =>
-        val users = TableQuery[Users]
-        val action = users += User(0, name, password)
-        DatabaseUtil.runAction(db, action)
-        redirect("/")
-      case _ =>
-        halt(400)
-    }
+    val name = params.get("name").getOrElse("")
+    val password = params.get("password").getOrElse("")
+    userService.addUser(UserDto(0, name, password)).map {
+      userId => redirect("/") // TODO: redirect to the user page.
+    }.get
   }
 }

@@ -1,13 +1,15 @@
 package services
 
+import lib.FakeDatabaseImpl
 import org.scalatest.FunSpec
 import org.scalatest.BeforeAndAfter
 import org.mockito.Mockito._
-import org.mockito.Matchers._
+import org.mockito.Matchers.{any, eq => equal}
 
 import dto.FolderDto
 import dao.FolderDao
 import dao.FolderDaoComponent
+import scalikejdbc.DBSession
 
 class FolderServiceSpec extends FunSpec with BeforeAndAfter {
   var sut: FolderService = _
@@ -15,8 +17,7 @@ class FolderServiceSpec extends FunSpec with BeforeAndAfter {
 
   before {
     folderDaoMock = mock(classOf[FolderDao])
-    sut = new FolderService with FolderDaoComponent
-    {
+    sut = new FolderService(new FakeDatabaseImpl) with FolderDaoComponent {
       val folderDao = folderDaoMock
     }
   }
@@ -24,35 +25,40 @@ class FolderServiceSpec extends FunSpec with BeforeAndAfter {
   describe("addFolderは") {
     it("insertできる") {
       // SetUp
-      val dto = new FolderDto(0, "owner", "name")
+      val dto = FolderDto(0, "owner", "name")
 
       // Exercise
-      sut.addFolder(dto)
+      val t = sut.addFolder(dto)
 
       // Verify
-      verify(folderDaoMock).insert(dto)
+      assert(t.isSuccess)
+      verify(folderDaoMock).insert(equal(dto))(any[DBSession])
     }
 
-    it("ownerが空の場合に例外を投げる") {
-      intercept[IllegalArgumentException] {
-        sut.addFolder(new FolderDto(0, "", "name"))
-      }
+    it("ownerが空の場合に失敗する") {
+      // Exercise
+      val t = sut.addFolder(FolderDto(0, "", "name"))
+
+      // Verify
+      assert(t.isFailure)
     }
 
-    it("nameが空の場合に例外を投げる") {
-      intercept[IllegalArgumentException] {
-        sut.addFolder(new FolderDto(0, "owner", ""))
-      }
+    it("nameが空の場合に失敗する") {
+      // Exercise
+      val t = sut.addFolder(FolderDto(0, "owner", ""))
+
+      // Verify
+      assert(t.isFailure)
     }
   }
 
   describe("findFolderで") {
     it("folderを取ってこれる") {
       // Exercise
-      sut.findFolder(1)
+      val t = sut.findFolder(1)
 
       // Verify
-      verify(folderDaoMock).find(1)
+      verify(folderDaoMock).find(equal(1))(any[DBSession])
     }
   }
 }

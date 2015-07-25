@@ -2,14 +2,31 @@ package services
 
 import dto.FolderDto
 import dao.FolderDaoComponent
+import lib.Database
 
-class FolderService { this: FolderDaoComponent =>
-  def addFolder(folder: FolderDto): Int = {
-    if (folder.owner.isEmpty || folder.name.isEmpty) {
-      throw new IllegalArgumentException("Could not create folder");
-    }
-    folderDao.insert(folder)
+import scala.util.{Success, Failure, Try}
+
+class FolderService(db: Database) { this: FolderDaoComponent =>
+  def validateFolder(folder: FolderDto): Try[Unit] = {
+    if (folder.owner.isEmpty)
+      return Failure(new IllegalArgumentException("owner cannot be empty"))
+    if (folder.name.isEmpty)
+      return Failure(new IllegalArgumentException("name cannot be empty"))
+    Success(())
   }
 
-  def findFolder(folderId: Int): Option[FolderDto] = folderDao.find(folderId)
+  def forceAddFolder(folder: FolderDto): Try[Int] =
+    Try {
+      db.transaction { implicit session =>
+        folderDao.insert(folder)
+      }
+    }
+
+  def addFolder(folder: FolderDto): Try[Int] =
+    validateFolder(folder).flatMap(_ => forceAddFolder(folder))
+
+  def findFolder(folderId: Int): Option[FolderDto] =
+    db.transaction { implicit session =>
+      folderDao.find(folderId)
+    }
 }
